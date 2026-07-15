@@ -131,11 +131,15 @@ struct GlassGroup<Content: View>: View {
     @ViewBuilder var content: Content
 
     var body: some View {
+        #if os(iOS)
         if #available(iOS 26, *) {
             GlassEffectContainer(spacing: spacing) { content }
         } else {
             content
         }
+        #else
+        content
+        #endif
     }
 }
 
@@ -144,6 +148,7 @@ extension View {
     /// Falls back to `.ultraThinMaterial` on earlier systems.
     @ViewBuilder
     func glassCapsule(tint: Color? = nil, interactive: Bool = false) -> some View {
+        #if os(iOS)
         if #available(iOS 26, *) {
             self.glassEffect(Self.resolvedGlass(tint: tint, interactive: interactive), in: .capsule)
         } else {
@@ -151,11 +156,17 @@ extension View {
                 .background(.ultraThinMaterial, in: Capsule())
                 .clipShape(Capsule())
         }
+        #else
+        self.background(tint?.opacity(0.16) ?? .clear)
+            .background(.ultraThinMaterial, in: Capsule())
+            .clipShape(Capsule())
+        #endif
     }
 
     /// Liquid Glass rounded-rect surface for larger floating controls.
     @ViewBuilder
     func glassCard(cornerRadius: CGFloat = 20, tint: Color? = nil, interactive: Bool = false) -> some View {
+        #if os(iOS)
         if #available(iOS 26, *) {
             self.glassEffect(Self.resolvedGlass(tint: tint, interactive: interactive),
                              in: .rect(cornerRadius: cornerRadius))
@@ -164,11 +175,17 @@ extension View {
                 .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
                 .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
         }
+        #else
+        self.background(tint?.opacity(0.16) ?? .clear)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        #endif
     }
 
     /// Liquid Glass circle — steppers, icon buttons.
     @ViewBuilder
     func glassCircle(tint: Color? = nil, interactive: Bool = true) -> some View {
+        #if os(iOS)
         if #available(iOS 26, *) {
             self.glassEffect(Self.resolvedGlass(tint: tint, interactive: interactive), in: .circle)
         } else {
@@ -176,8 +193,14 @@ extension View {
                 .background(.ultraThinMaterial, in: Circle())
                 .clipShape(Circle())
         }
+        #else
+        self.background(tint?.opacity(0.16) ?? .clear)
+            .background(.ultraThinMaterial, in: Circle())
+            .clipShape(Circle())
+        #endif
     }
 
+    #if os(iOS)
     @available(iOS 26, *)
     private static func resolvedGlass(tint: Color?, interactive: Bool) -> Glass {
         var g: Glass = .regular
@@ -185,15 +208,20 @@ extension View {
         if interactive { g = g.interactive() }
         return g
     }
+    #endif
 
     /// Soft scroll-edge treatment under floating headers (no-op before iOS 26).
     @ViewBuilder
     func softTopEdge() -> some View {
+        #if os(iOS)
         if #available(iOS 26, *) {
             self.scrollEdgeEffectStyle(.soft, for: .top)
         } else {
             self
         }
+        #else
+        self
+        #endif
     }
 }
 
@@ -202,6 +230,7 @@ struct AdaptiveGlassButton: ViewModifier {
     var prominent: Bool = false
 
     func body(content: Content) -> some View {
+        #if os(iOS)
         if #available(iOS 26, *) {
             if prominent {
                 content.buttonStyle(.glassProminent)
@@ -211,12 +240,9 @@ struct AdaptiveGlassButton: ViewModifier {
         } else {
             content.buttonStyle(.bordered)
         }
-    }
-}
-
-extension View {
-    func adaptiveGlassButton(prominent: Bool = false) -> some View {
-        modifier(AdaptiveGlassButton(prominent: prominent))
+        #else
+        content.buttonStyle(.bordered)
+        #endif
     }
 }
 
