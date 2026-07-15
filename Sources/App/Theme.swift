@@ -1,62 +1,5 @@
 import SwiftUI
-// MARK: - iOS 26 Compatibility Stubs
 
-#if os(iOS)
-@available(iOS 26, *)
-struct GlassEffectContainer<Content: View>: View {
-    var spacing: CGFloat = 16
-    @ViewBuilder var content: Content
-    
-    var body: some View {
-        content
-    }
-}
-
-@available(iOS 26, *)
-enum Glass {
-    case regular
-    
-    func tint(_ color: Color) -> Glass { self }
-    func interactive() -> Glass { self }
-}
-
-@available(iOS 26, *)
-extension View {
-    func glassEffect(_ glass: Glass, in shape: some Shape) -> some View {
-        self
-    }
-    
-    func scrollEdgeEffectStyle(_ style: EdgeEffectStyle, for edge: Edge) -> some View {
-        self
-    }
-}
-
-@available(iOS 26, *)
-enum EdgeEffectStyle {
-    case soft
-}
-
-@available(iOS 26, *)
-enum Edge {
-    case top
-}
-
-// Button style stubs
-@available(iOS 26, *)
-extension ButtonStyle where Self == GlassButtonStyle {
-    static var glass: GlassButtonStyle { GlassButtonStyle() }
-    static var glassProminent: GlassButtonStyle { GlassButtonStyle(prominent: true) }
-}
-
-@available(iOS 26, *)
-struct GlassButtonStyle: ButtonStyle {
-    var prominent: Bool = false
-    
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-    }
-}
-#endif
 // MARK: - Palette
 
 /// A Momentum palette: how day-intensity `t` (0…1) maps to color.
@@ -138,6 +81,17 @@ struct Palette: Identifiable, Codable, Hashable {
             widgetBackgroundHex: dark ? "16181C" : "FFFFFF", cornerRadius: 24)
     }
 
+    /// Subtle depth gradient: widget background washed toward the ramp's low end.
+    /// Content color, not chrome — used only when the user picks the Gradient background.
+    var backgroundGradient: LinearGradient {
+        LinearGradient(
+            colors: [
+                Color(hex: Self.mix(widgetBackgroundHex, rampLowHex, 0.55)),
+                widgetBackground,
+            ],
+            startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
+
     static func mix(_ aHex: String, _ bHex: String, _ t: Double) -> String {
         let a = UIColor(Color(hex: aHex)), b = UIColor(Color(hex: bHex))
         var ar: CGFloat = 0, ag: CGFloat = 0, ab: CGFloat = 0, aa: CGFloat = 0
@@ -188,15 +142,11 @@ struct GlassGroup<Content: View>: View {
     @ViewBuilder var content: Content
 
     var body: some View {
-        #if os(iOS)
         if #available(iOS 26, *) {
             GlassEffectContainer(spacing: spacing) { content }
         } else {
             content
         }
-        #else
-        content
-        #endif
     }
 }
 
@@ -205,7 +155,6 @@ extension View {
     /// Falls back to `.ultraThinMaterial` on earlier systems.
     @ViewBuilder
     func glassCapsule(tint: Color? = nil, interactive: Bool = false) -> some View {
-        #if os(iOS)
         if #available(iOS 26, *) {
             self.glassEffect(Self.resolvedGlass(tint: tint, interactive: interactive), in: .capsule)
         } else {
@@ -213,17 +162,11 @@ extension View {
                 .background(.ultraThinMaterial, in: Capsule())
                 .clipShape(Capsule())
         }
-        #else
-        self.background(tint?.opacity(0.16) ?? .clear)
-            .background(.ultraThinMaterial, in: Capsule())
-            .clipShape(Capsule())
-        #endif
     }
 
     /// Liquid Glass rounded-rect surface for larger floating controls.
     @ViewBuilder
     func glassCard(cornerRadius: CGFloat = 20, tint: Color? = nil, interactive: Bool = false) -> some View {
-        #if os(iOS)
         if #available(iOS 26, *) {
             self.glassEffect(Self.resolvedGlass(tint: tint, interactive: interactive),
                              in: .rect(cornerRadius: cornerRadius))
@@ -232,17 +175,11 @@ extension View {
                 .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
                 .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
         }
-        #else
-        self.background(tint?.opacity(0.16) ?? .clear)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-        #endif
     }
 
     /// Liquid Glass circle — steppers, icon buttons.
     @ViewBuilder
     func glassCircle(tint: Color? = nil, interactive: Bool = true) -> some View {
-        #if os(iOS)
         if #available(iOS 26, *) {
             self.glassEffect(Self.resolvedGlass(tint: tint, interactive: interactive), in: .circle)
         } else {
@@ -250,14 +187,8 @@ extension View {
                 .background(.ultraThinMaterial, in: Circle())
                 .clipShape(Circle())
         }
-        #else
-        self.background(tint?.opacity(0.16) ?? .clear)
-            .background(.ultraThinMaterial, in: Circle())
-            .clipShape(Circle())
-        #endif
     }
 
-    #if os(iOS)
     @available(iOS 26, *)
     private static func resolvedGlass(tint: Color?, interactive: Bool) -> Glass {
         var g: Glass = .regular
@@ -265,20 +196,15 @@ extension View {
         if interactive { g = g.interactive() }
         return g
     }
-    #endif
 
     /// Soft scroll-edge treatment under floating headers (no-op before iOS 26).
     @ViewBuilder
     func softTopEdge() -> some View {
-        #if os(iOS)
         if #available(iOS 26, *) {
             self.scrollEdgeEffectStyle(.soft, for: .top)
         } else {
             self
         }
-        #else
-        self
-        #endif
     }
 }
 
@@ -287,7 +213,6 @@ struct AdaptiveGlassButton: ViewModifier {
     var prominent: Bool = false
 
     func body(content: Content) -> some View {
-        #if os(iOS)
         if #available(iOS 26, *) {
             if prominent {
                 content.buttonStyle(.glassProminent)
@@ -297,9 +222,12 @@ struct AdaptiveGlassButton: ViewModifier {
         } else {
             content.buttonStyle(.bordered)
         }
-        #else
-        content.buttonStyle(.bordered)
-        #endif
+    }
+}
+
+extension View {
+    func adaptiveGlassButton(prominent: Bool = false) -> some View {
+        modifier(AdaptiveGlassButton(prominent: prominent))
     }
 }
 
@@ -314,11 +242,11 @@ extension View {
             .kerning(-0.5)
     }
 
-    /// The Momentum wordmark voice — big, heavy, expanded sans serif.
+    /// The Momentum wordmark voice — a sophisticated serif (New York).
+    /// Reserved for the brand name and rare display moments; everything else is SF.
     func wordmark(_ size: CGFloat = 40) -> some View {
-        font(.system(size: size, weight: .heavy, design: .default))
-            .fontWidth(.expanded)
-            .kerning(-1.0)
+        font(.system(size: size, weight: .semibold, design: .serif))
+            .kerning(-0.5)
     }
 
     /// 11pt uppercase tracked caption (canvas caption row).
@@ -333,6 +261,25 @@ extension View {
     func sectionLabel() -> some View {
         widgetCaption(Chrome.tertiary)
     }
+}
+
+// MARK: - Micro-interaction: press scale
+
+/// Squeezes the control slightly under the finger. Cheap, universal tactility.
+struct PressScaleStyle: ButtonStyle {
+    var scale: CGFloat = 0.96
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? scale : 1)
+            .opacity(configuration.isPressed ? 0.9 : 1)
+            .animation(.spring(response: 0.25, dampingFraction: 0.8),
+                       value: configuration.isPressed)
+    }
+}
+
+extension ButtonStyle where Self == PressScaleStyle {
+    static var pressScale: PressScaleStyle { PressScaleStyle() }
 }
 
 // MARK: - Hex color plumbing

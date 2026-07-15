@@ -6,8 +6,8 @@ import SwiftUI
 struct TodayView: View {
     @Environment(MomentumStore.self) private var store
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var config = WidgetConfig.load()
-    @State private var logTick = 0   // haptic trigger
+    @State private var look = PresetStore.defaultLook()   // design of the hero card
+    @State private var logTick = 0                         // haptic trigger
 
     private var metric: Metric? { store.selectedMetric }
     private var todayKey: String { Days.key(.now) }
@@ -37,6 +37,7 @@ struct TodayView: View {
             .toolbar(.hidden, for: .navigationBar)
             .refreshable { await HealthKitService.shared.syncAll(into: store) }
             .sensoryFeedback(.impact(weight: .light), trigger: logTick)
+            .onAppear { look = PresetStore.defaultLook() }
         }
     }
 
@@ -45,13 +46,9 @@ struct TodayView: View {
     private var header: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 6) {
-                // Use a clear serif wordmark — prefer system serif for reliability across devices.
                 Text("Momentum")
-                    .font(.system(size: 40, weight: .regular, design: .serif))
-                    .lineLimit(1)
+                    .wordmark(40)
                     .foregroundStyle(.white)
-                    .accessibilityAddTraits(.isHeader)
-
                 Text(Date.now, format: .dateTime.weekday(.wide).month(.wide).day())
                     .widgetCaption(Chrome.tertiary)
             }
@@ -74,15 +71,13 @@ struct TodayView: View {
         .foregroundStyle(Chrome.accent)
         .padding(.horizontal, 14)
         .frame(height: 34)
-        // Apply the liquid glass look to badges as well — subtle tint.
-        .liquidGlass(cornerRadius: 17, tint: Chrome.accent.opacity(0.20), reduceMotion: reduceMotion)
+        .glassCapsule(tint: Chrome.accent.opacity(0.25))
     }
 
     // MARK: metric switcher — glass chips
 
     private var metricChips: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            // Use base GlassGroup if present, but wrap row with liquid glass to unify the look.
             GlassGroup(spacing: 10) {
                 HStack(spacing: 10) {
                     ForEach(store.metrics.filter { !$0.isArchived }) { m in
@@ -99,51 +94,26 @@ struct TodayView: View {
                                 .padding(.horizontal, 18)
                                 .frame(height: 44)
                         }
-                        // Keep existing glass capsule interactive behavior but unify visuals with liquidGlass
                         .glassCapsule(tint: selected ? Chrome.accent.opacity(0.3) : nil,
                                       interactive: true)
                     }
                 }
                 .padding(.vertical, 2)
             }
-            .padding(8)
-            .liquidGlass(cornerRadius: 20, tint: Color.white.opacity(0.02), reduceMotion: reduceMotion)
         }
         .scrollClipDisabled()
     }
 
-    // MARK: hero card — the widget, mirrored in-app
+    // MARK: hero card — the default preset, mirrored in-app on the selected metric
 
     private func heroCard(_ metric: Metric) -> some View {
-        let palette = config.resolvedPalette()
-        let style = config.style
-        let input = VizInput(
-            series: store.series(metric, days: config.span ?? style.defaultSpan),
-            palette: palette, goal: metric.goal,
-            cap: store.cap(for: metric), unit: metric.unit)
-        return VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text(metric.name).widgetCaption(palette.secondaryText)
-                Spacer()
-                Text("\(Int(store.total(metric, days: 7))) \(metric.unit) / wk")
-                    .font(.system(size: 12, weight: .semibold))
-                    .monospacedDigit()
-                    .contentTransition(.numericText())
-                    .foregroundStyle(palette.accent)
-            }
-            VizView(style: style, input: input)
-                .frame(height: 126)
-                .animation(Motion.respect(Motion.settle, reduceMotion: reduceMotion),
-                           value: store.value(metric.id, on: todayKey))
-        }
-        .padding(16)
-        // Instead of a flat background color, use the liquid glass effect for the hero card.
-        .liquidGlass(cornerRadius: palette.cornerRadius, tint: palette.accent.opacity(0.06), reduceMotion: reduceMotion)
-        .overlay {
-            RoundedRectangle(cornerRadius: palette.cornerRadius)
-                .strokeBorder(Chrome.hairline, lineWidth: 1)
-        }
-        .shadow(color: .black.opacity(0.35), radius: 24, y: 10)
+        var pinned = look
+        pinned.metricID = metric.id   // hero always follows the chip selection
+        let data = PresetRenderData.make(preset: pinned, store: store)
+        return PresetCardView(data: data, showsShadow: true)
+            .frame(height: 170)
+            .animation(Motion.respect(Motion.settle, reduceMotion: reduceMotion),
+                       value: store.value(metric.id, on: todayKey))
     }
 
     // MARK: quick log — glass controls
@@ -239,88 +209,10 @@ struct TodayView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
-        // Apply liquid glass to stats too for a cohesive look.
-        .liquidGlass(cornerRadius: 16, tint: Color.white.opacity(0.02), reduceMotion: reduceMotion)
+        .background(Chrome.card)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay {
             RoundedRectangle(cornerRadius: 16).strokeBorder(Chrome.hairline, lineWidth: 1)
         }
-    }
-}
-
-// MARK: Liquid glass modifier — subtle animated sheen + material blur.
-
-fileprivate struct LiquidGlass: ViewModifier {
-    var cornerRadius: CGFloat = 16
-    var tint: Color = .white.opacity(0.02)
-    var reduceMotion: Bool = false
-
-    @State private var phase: CGFloat = 0
-
-    func body(content: Content) -> some View {
-        content
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
-            .overlay {
-                // Soft tinted layer
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(tint)
-                    .blendMode(.overlay)
-                    .opacity(0.9)
-            }
-            .overlay {
-                // Animated sheen
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(sheenGradient(phase: phase))
-                    .mask(
-                        RoundedRectangle(cornerRadius: cornerRadius)
-                            .inset(by: -1)
-                    )
-                    .opacity(reduceMotion ? 0.12 : 0.18)
-                    .blur(radius: 16)
-                    .allowsHitTesting(false)
-                    .animation(reduceMotion ? nil : .linear(duration: 6).repeatForever(autoreverses: false), value: phase)
-            }
-            .overlay {
-                // Top highlight
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .strokeBorder(.white.opacity(0.06), lineWidth: 1)
-                    .blendMode(.overlay)
-            }
-            .onAppear {
-                guard !reduceMotion else { return }
-                // drive the sheen animation slowly
-                withAnimation(.linear(duration: 6).repeatForever(autoreverses: false)) {
-                    phase = 1
-                }
-            }
-    }
-
-    func sheenGradient(phase: CGFloat) -> some ShapeStyle {
-        // Move a white to transparent linear gradient across the shape.
-        let start = UnitPoint(x: -0.5 + phase * 1.5, y: 0)
-        let end = UnitPoint(x: 0.5 + phase * 1.5, y: 1)
-        return LinearGradient(colors: [Color.white.opacity(0.25), Color.white.opacity(0.02), Color.clear], startPoint: start, endPoint: end)
-    }
-}
-
-fileprivate extension View {
-    func liquidGlass(cornerRadius: CGFloat = 16, tint: Color = .white.opacity(0.02), reduceMotion: Bool = false) -> some View {
-        modifier(LiquidGlass(cornerRadius: cornerRadius, tint: tint, reduceMotion: reduceMotion))
-    }
-}
-
-// Keep the adaptiveGlassButton in-file but use liquidGlass for visual polish.
-
-extension View {
-    func adaptiveGlassButton(prominent: Bool = false) -> some View {
-        self
-            .buttonStyle(.plain)
-            .background(
-                prominent ? Chrome.accent.opacity(0.3) : Chrome.card,
-                in: RoundedRectangle(cornerRadius: 16)
-            )
-            .overlay {
-                RoundedRectangle(cornerRadius: 16)
-                    .strokeBorder(Chrome.hairline, lineWidth: 1)
-            }
     }
 }
