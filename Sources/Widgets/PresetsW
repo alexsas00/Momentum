@@ -1,0 +1,95 @@
+import Foundation
+import WidgetKit
+
+// MARK: - Widget presets ("saved iterations")
+//
+// A preset is a complete, named widget look: metric + style + palette + span.
+// The user builds them in the Studio, saves as many as they like, and picks one
+// from the home screen via long-press → Edit Widget → Preset.
+//
+// ⚠️ Target membership: add this file to BOTH the app and MomentumWidgets targets
+// (like Models.swift / Theme.swift) — the widget intent reads presets directly.
+
+struct WidgetPreset: Identifiable, Codable, Hashable {
+    var id: UUID = UUID()
+    var name: String
+    var metricID: UUID?
+    var style: VizStyle = .burst
+    var paletteID: String = Palette.greenDark.id
+    var customAccentHex: String? = nil
+    var span: Int? = nil
+    var createdAt: Date = .now
+
+    func resolvedPalette() -> Palette {
+        if paletteID == "custom", let hex = customAccentHex {
+            return .custom(from: .init(hex: hex))
+        }
+        return Palette.curated.first { $0.id == paletteID } ?? .greenDark
+    }
+
+    /// The editable Studio representation of this preset.
+    var asConfig: WidgetConfig {
+        WidgetConfig(metricID: metricID, style: style, paletteID: paletteID,
+                     customAccentHex: customAccentHex, span: span)
+    }
+
+    static func from(_ config: WidgetConfig, name: String) -> WidgetPreset {
+        WidgetPreset(name: name, metricID: config.metricID, style: config.style,
+                     paletteID: config.paletteID, customAccentHex: config.customAccentHex,
+                     span: config.span)
+    }
+}
+
+enum PresetStore {
+    static let key = "momentum.widgetPresets"
+
+    static func load() -> [WidgetPreset] {
+        guard let data = AppGroup.defaults.data(forKey: key),
+              let presets = try? JSONDecoder().decode([WidgetPreset].self, from: data) else {
+            return []
+        }
+        return presets.sorted { $0.createdAt < $1.createdAt }
+    }
+
+    static func save(_ presets: [WidgetPreset]) {
+        if let data = try? JSONEncoder().encode(presets) {
+            AppGroup.defaults.set(data, forKey: key)
+        }
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    /// Insert or update by id.
+    @discardableResult
+    static func upsert(_ preset: WidgetPreset) -> [WidgetPreset] {
+        var all = load()
+        if let i = all.firstIndex(where: { $0.id == preset.id }) {
+            all[i] = preset
+        } else {
+            all.append(preset)
+        }
+        save(all)
+        return all
+    }
+
+    @discardableResult
+    static func delete(id: UUID) -> [WidgetPreset] {
+        var all = load()
+        all.removeAll { $0.id == id }
+        save(all)
+        return all
+    }
+
+    static func preset(id: UUID) -> WidgetPreset? {
+        load().first { $0.id == id }
+    }
+
+    /// A sensible auto-name for a new preset: "Burst · Ember", deduplicated.
+    static func suggestedName(for config: WidgetConfig) -> String {
+        let base = "\(config.style.label) · \(config.resolvedPalette().name)"
+        let existing = Set(load().map(\.name))
+        guard existing.contains(base) else { return base }
+        var n = 2
+        while existing.contains("\(base) \(n)") { n += 1 }
+        return "\(base) \(n)"
+    }
+}
