@@ -115,16 +115,19 @@ struct BurstViz: View {
     private var spokes: some View {
         Canvas { ctx, size in
             let n = input.series.count
-            let c = CGPoint(x: size.width / 2, y: size.height / 2)
+            let cx = size.width / 2
+            let cy = size.height / 2
             let gap = min(size.width, size.height) * 0.29
             let maxLen = min(size.width, size.height) * 0.21
             for i in 0..<n {
                 let d = input.series[i]
                 let len: CGFloat = d.value > 0 ? maxLen * (0.25 + 0.75 * input.t(d.value)) : maxLen * 0.1
-                let th = -Double.pi / 2 + Double(i) * (2 * .pi / Double(n))
+                let th: CGFloat = -CGFloat.pi / 2 + CGFloat(i) * (2 * .pi / CGFloat(n))
+                let ct = cos(th)
+                let st = sin(th)
                 var path = Path()
-                path.move(to: CGPoint(x: c.x + gap * cos(th), y: c.y + gap * sin(th)))
-                path.addLine(to: CGPoint(x: c.x + (gap + len) * cos(th), y: c.y + (gap + len) * sin(th)))
+                path.move(to: CGPoint(x: cx + gap * ct, y: cy + gap * st))
+                path.addLine(to: CGPoint(x: cx + (gap + len) * ct, y: cy + (gap + len) * st))
                 ctx.stroke(path, with: .color(input.dayColor(i)), style: .init(lineWidth: 3.5, lineCap: .round))
             }
         }
