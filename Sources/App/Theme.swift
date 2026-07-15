@@ -1,5 +1,62 @@
 import SwiftUI
+// MARK: - iOS 26 Compatibility Stubs
 
+#if os(iOS)
+@available(iOS 26, *)
+struct GlassEffectContainer<Content: View>: View {
+    var spacing: CGFloat = 16
+    @ViewBuilder var content: Content
+    
+    var body: some View {
+        content
+    }
+}
+
+@available(iOS 26, *)
+enum Glass {
+    case regular
+    
+    func tint(_ color: Color) -> Glass { self }
+    func interactive() -> Glass { self }
+}
+
+@available(iOS 26, *)
+extension View {
+    func glassEffect(_ glass: Glass, in shape: some Shape) -> some View {
+        self
+    }
+    
+    func scrollEdgeEffectStyle(_ style: EdgeEffectStyle, for edge: Edge) -> some View {
+        self
+    }
+}
+
+@available(iOS 26, *)
+enum EdgeEffectStyle {
+    case soft
+}
+
+@available(iOS 26, *)
+enum Edge {
+    case top
+}
+
+// Button style stubs
+@available(iOS 26, *)
+extension ButtonStyle where Self == GlassButtonStyle {
+    static var glass: GlassButtonStyle { GlassButtonStyle() }
+    static var glassProminent: GlassButtonStyle { GlassButtonStyle(prominent: true) }
+}
+
+@available(iOS 26, *)
+struct GlassButtonStyle: ButtonStyle {
+    var prominent: Bool = false
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+    }
+}
+#endif
 // MARK: - Palette
 
 /// A Momentum palette: how day-intensity `t` (0…1) maps to color.
