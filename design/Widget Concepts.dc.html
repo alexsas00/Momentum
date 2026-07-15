@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@400..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&family=Outfit:wght@100..900&family=Archivo:wdth,wght@62..125,100..900&family=Geist:wght@100..900&display=swap"><style>body{margin:0;background:#eef0f2;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',system-ui,sans-serif}a{color:#0a7736}a:hover{color:#137f3c}.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 6px}.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}.dv-tsub{font:400 11.5px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5);margin:0 0 22px;max-width:640px}.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}.dv-olabel b{font-weight:600;color:rgba(0,0,0,.8)}.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}.dv-opt:target .dv-oid{background:#0a7736;color:#fff}.dv-next{margin:26px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}</style></helmet>
+
+<section class="dv-turn" id="t3">
+  <div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname">Skill-driven languages: Apple material · Nothing mono · Grotesk editorial</span></div>
+  <p class="dv-tsub">Three coherent widget languages from your skills. <b>3a–3c</b>: translucent materials over wallpaper, SF type, vibrancy. <b>3d–3f</b>: monochrome + red interrupt, Space Grotesk/Mono + Doto dot-matrix, flat OLED, no shadows. <b>3g–3i</b>: sans-serif editorial — Outfit, Archivo, Geist — where type itself carries the data.</p>
+  <div class="dv-opts">
+
+    <div class="dv-opt" id="3a">
+      <div class="dv-olabel"><a class="dv-oid" href="#3a">3a</a><b>Glass grid</b> — <a class="dv-oid" href="#1a">1a</a> on translucent material · apple · light</div>
+      <div class="dv-card" style="padding:22px;background:radial-gradient(120% 90% at 20% 10%, #e9f0dd 0%, rgba(233,240,221,0) 60%), radial-gradient(100% 90% at 85% 90%, #cfe3c2 0%, rgba(207,227,194,0) 55%), linear-gradient(160deg, #f2f1e8, #d3e0c8)"><div style="width:344px;height:158px;border-radius:24px;background:rgba(255,255,255,0.52);backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.6);padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 12px 30px rgba(40,60,40,0.16)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:13px;font-weight:600;color:#1d241c;letter-spacing:-0.01em">Activity</span>
+          <span style="font-size:12px;font-weight:600;color:rgba(29,36,28,0.55)"><span style="color:#0a7736;font-variant-numeric:tabular-nums">{{ weekKcal }}</span> kcal this week</span>
+        </div>
+        <div style="position:relative;width:285px;height:81px;margin:12px auto 0">
+          <sc-for list="{{ gridGlass }}" as="c" hint-placeholder-count="8">
+            <div style="position:absolute;left:{{ c.x }}px;top:{{ c.y }}px;width:9px;height:9px;border-radius:2.5px;background:{{ c.bg }}"></div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="3b">
+      <div class="dv-olabel"><a class="dv-oid" href="#3b">3b</a><b>Glass pulse</b> — <a class="dv-oid" href="#1d">1d</a> as dark material, vibrancy text · apple · dark</div>
+      <div class="dv-card" style="padding:22px;background:radial-gradient(90% 120% at 80% 0%, rgba(60,110,60,0.35) 0%, rgba(60,110,60,0) 55%), linear-gradient(150deg, #101710, #1d2b1e 45%, #0c0f0d)"><div style="width:344px;height:158px;border-radius:24px;background:rgba(22,27,22,0.55);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,0.14);padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,0.35);display:flex;align-items:center;gap:14px">
+        <div style="display:flex;flex-direction:column;gap:2px;min-width:88px">
+          <span style="font-size:34px;font-weight:700;color:#ffffff;letter-spacing:-0.02em;line-height:1;font-variant-numeric:tabular-nums">{{ todayKcal }}</span>
+          <span style="font-size:11px;font-weight:600;color:rgba(235,245,235,0.62);letter-spacing:0.01em">Kcal today</span>
+          <span style="font-size:12px;font-weight:600;color:#8ee887;margin-top:8px;font-variant-numeric:tabular-nums">{{ todayKm }} km run</span>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;gap:3px;height:100%">
+          <sc-for list="{{ waveBars }}" as="b" hint-placeholder-count="8">
+            <div style="width:4px;height:{{ b.h }}px;border-radius:2px;background:{{ b.bg }}"></div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="3c">
+      <div class="dv-olabel"><a class="dv-oid" href="#3c">3c</a><b>Glass phases</b> — <a class="dv-oid" href="#1k">1k</a> on light material · apple · light</div>
+      <div class="dv-card" style="padding:22px;background:radial-gradient(110% 100% at 15% 85%, #d8e7c9 0%, rgba(216,231,201,0) 55%), linear-gradient(200deg, #f4f2e9, #dde6d2)"><div style="width:344px;height:158px;border-radius:24px;background:rgba(255,255,255,0.55);backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.6);padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 12px 30px rgba(40,60,40,0.16)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:13px;font-weight:600;color:#1d241c;letter-spacing:-0.01em">Daily goal</span>
+          <span style="font-size:12px;font-weight:600;color:rgba(29,36,28,0.55)"><span style="color:#0a7736;font-variant-numeric:tabular-nums">{{ goalLabel }}</span> kcal</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px 14px;width:280px;margin:12px auto 0;justify-content:center">
+          <sc-for list="{{ phaseDiscsL }}" as="p" hint-placeholder-count="8">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:28px;height:28px;border-radius:50%;background:{{ p.bg }};box-shadow:{{ p.bs }}"></div>
+              <span style="font-size:8px;font-weight:600;color:rgba(30,40,30,0.5)">{{ p.letter }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="3d">
+      <div class="dv-olabel"><a class="dv-oid" href="#3d">3d</a><b>Doto hero</b> — dot-matrix number, mono meta, red = today · nothing · dark</div>
+      <div class="dv-card" style="padding:22px;background:#0a0a0a"><div style="width:344px;height:158px;border-radius:16px;background:#000000;border:1px solid #1e1e1e;padding:18px;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between">
+        <div style="display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em">
+          <span style="color:rgba(255,255,255,0.55)">BURN / DAILY</span>
+          <span style="color:rgba(255,255,255,0.35)">WK {{ weekKcal }} KCAL</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <span style="font-family:'Doto',monospace;font-weight:900;font-size:56px;line-height:0.85;color:#ffffff;font-variant-numeric:tabular-nums">{{ todayKcal }}</span>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;color:rgba(255,255,255,0.55)">
+            <span>STREAK {{ streakPad }}</span>
+            <span>{{ weekKm }} KM / WK</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:4px">
+          <sc-for list="{{ monoRow }}" as="m" hint-placeholder-count="8">
+            <div style="width:6px;height:6px;border-radius:1px;background:{{ m.bg }}"></div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="3e">
+      <div class="dv-olabel"><a class="dv-oid" href="#3e">3e</a><b>Segments</b> — a week of effort as instrument readout · nothing · light</div>
+      <div class="dv-card" style="padding:22px;background:#e6e3dc"><div style="width:344px;height:158px;border-radius:16px;background:#F1EFE9;border:1px solid rgba(0,0,0,0.14);padding:14px 18px;box-sizing:border-box;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:0.12em;color:rgba(26,26,26,0.5);margin-bottom:8px">
+          <span>WEEK 29 / SEGMENTS = EFFORT</span>
+          <span>KCAL</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4.5px">
+          <sc-for list="{{ segRows }}" as="r" hint-placeholder-count="7">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:4px;height:4px;background:{{ r.mark }}"></div>
+              <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.06em;color:rgba(26,26,26,0.6);width:44px">{{ r.label }}</span>
+              <div style="display:flex;gap:2px">
+                <sc-for list="{{ r.segs }}" as="s" hint-placeholder-count="10">
+                  <div style="width:13px;height:7px;border-radius:1px;background:{{ s }}"></div>
+                </sc-for>
+              </div>
+              <span style="font-family:'Space Mono',monospace;font-size:10px;color:#1A1A1A;flex:1;text-align:right;font-variant-numeric:tabular-nums">{{ r.val }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="3f">
+      <div class="dv-olabel"><a class="dv-oid" href="#3f">3f</a><b>Mono grid</b> — <a class="dv-oid" href="#1a">1a</a> in grayscale, one red cell = today · nothing · dark</div>
+      <div class="dv-card" style="padding:22px;background:#0a0a0a"><div style="width:344px;height:158px;border-radius:16px;background:#000000;border:1px solid #1e1e1e;padding:16px 18px;box-sizing:border-box;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em">
+          <span style="color:rgba(255,255,255,0.55)">ACTIVITY — 24 WEEKS</span>
+          <span style="color:rgba(255,255,255,0.35)">{{ monthKcal }} KCAL / 30D</span>
+        </div>
+        <div style="position:relative;width:285px;height:81px;margin:14px auto 0">
+          <sc-for list="{{ gridMono }}" as="c" hint-placeholder-count="8">
+            <div style="position:absolute;left:{{ c.x }}px;top:{{ c.y }}px;width:9px;height:9px;border-radius:1px;background:{{ c.bg }}"></div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="3g">
+      <div class="dv-olabel"><a class="dv-oid" href="#3g">3g</a><b>Stack</b> — last four workouts, weight = burn · outfit · light</div>
+      <div class="dv-card" style="padding:22px;background:#e9e6dd"><div style="width:344px;height:158px;border-radius:24px;background:#faf8f2;padding:14px 20px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(40,40,20,0.10);font-family:'Outfit',sans-serif">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:10px;font-weight:600;letter-spacing:0.14em;color:#9a9a8e">LAST FOUR WORKOUTS</span>
+          <span style="font-size:10px;font-weight:600;letter-spacing:0.14em;color:#9a9a8e">KCAL</span>
+        </div>
+        <div style="display:flex;flex-direction:column;margin-top:6px">
+          <sc-for list="{{ typeStack }}" as="d" hint-placeholder-count="4">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(0,0,0,0.06);padding:3px 0">
+              <span style="font-size:11px;font-weight:600;letter-spacing:0.12em;color:#9a9a8e">{{ d.label }}</span>
+              <span style="font-size:24px;font-weight:{{ d.fw }};color:{{ d.color }};opacity:{{ d.op }};letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums">{{ d.val }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="3h">
+      <div class="dv-olabel"><a class="dv-oid" href="#3h">3h</a><b>Poster</b> — expanded grotesk number, 14-day bars · archivo · dark</div>
+      <div class="dv-card" style="padding:22px;background:#1b1e1a"><div style="width:344px;height:158px;border-radius:24px;background:#101210;padding:18px 20px;box-sizing:border-box;overflow:hidden;font-family:'Archivo',sans-serif;display:flex;flex-direction:column;justify-content:space-between">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:10px;font-weight:600;letter-spacing:0.18em;color:rgba(255,255,255,0.6)">KCAL BURNED / TODAY</span>
+            <div style="width:34px;height:2px;background:#0a7736"></div>
+          </div>
+          <span style="font-size:10px;font-weight:600;letter-spacing:0.14em;color:rgba(255,255,255,0.35)">WK {{ weekKm }} KM</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <span style="font-size:64px;font-weight:900;font-stretch:125%;letter-spacing:-0.03em;line-height:0.8;color:#ffffff;font-variant-numeric:tabular-nums">{{ todayKcal }}</span>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:50px">
+            <sc-for list="{{ barsPoster }}" as="b" hint-placeholder-count="8">
+              <div style="width:6px;height:{{ b.h }}px;border-radius:1px;background:{{ b.bg }}"></div>
+            </sc-for>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="3i">
+      <div class="dv-olabel"><a class="dv-oid" href="#3i">3i</a><b>Ledger</b> — dense 7-day readout, hairline rows · geist · light</div>
+      <div class="dv-card" style="padding:22px;background:#e9eae6"><div style="width:344px;height:158px;border-radius:24px;background:#fbfbf9;padding:12px 18px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(30,40,30,0.08);font-family:'Geist',sans-serif">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:4px">
+          <span style="font-size:9px;font-weight:600;letter-spacing:0.12em;color:#8a8f88">LAST 7 DAYS</span>
+          <span style="font-size:9px;font-weight:600;letter-spacing:0.12em;color:#8a8f88">KCAL / KM</span>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ tableRows }}" as="r" hint-placeholder-count="7">
+            <div style="display:grid;grid-template-columns:30px 44px 34px 1fr;gap:8px;align-items:center;border-top:1px solid rgba(0,0,0,0.06);padding:2.5px 0">
+              <span style="font-size:9px;font-weight:600;letter-spacing:0.08em;color:#8a8f88">{{ r.label }}</span>
+              <span style="font-size:11px;font-weight:600;color:#15180f;font-variant-numeric:tabular-nums">{{ r.kcal }}</span>
+              <span style="font-size:10px;color:#8a8f88;font-variant-numeric:tabular-nums">{{ r.km }}</span>
+              <div style="height:3px;border-radius:1.5px;background:rgba(0,0,0,0.05);position:relative">
+                <div style="position:absolute;left:0;top:0;bottom:0;width:{{ r.barW }}px;border-radius:1.5px;background:{{ r.dot }}"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+  <p class="dv-next">Try next: "full widget suite (small/medium/large/lock) in the <a class="dv-oid" href="#3d">3d</a> language" · "apply the Nothing language to <a class="dv-oid" href="#1c">1c</a> and <a class="dv-oid" href="#1k">1k</a>" · "more editorial type ideas like <a class="dv-oid" href="#3h">3h</a>"</p>
+</section>
+
+<section class="dv-turn" id="t2">
+  <div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Two aesthetic languages: system-native riffs on <a class="dv-oid" href="#1c">1c</a>/<a class="dv-oid" href="#1e">1e</a>/<a class="dv-oid" href="#1k">1k</a> + a dot-matrix/LED direction</span></div>
+  <p class="dv-tsub">Left three: soft, glanceable, SF-type — the polished platform feel. Right three: monochrome green LEDs on near-black, mono type, data as hardware. Same 3x greens, same fake athlete.</p>
+  <div class="dv-opts">
+
+    <div class="dv-opt" id="2a">
+      <div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a><b>Burst, expanded</b> — <a class="dv-oid" href="#1c">1c</a> as a medium with stats · dark</div>
+      <div class="dv-card" style="background:#131418;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#1c1d22;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35);display:flex;align-items:center;gap:18px">
+        <div style="position:relative;width:126px;height:126px;flex:none">
+          <sc-for list="{{ burst2 }}" as="s" hint-placeholder-count="6">
+            <div style="position:absolute;left:calc(50% - 1.75px);bottom:50%;width:3.5px;height:{{ s.h }}px;border-radius:2px;background:{{ s.grad }};transform:{{ s.rot }};transform-origin:bottom center"></div>
+          </sc-for>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <span style="font-size:13px;font-weight:700;color:#ffffff">30d</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:34px;font-weight:700;color:#ffffff;letter-spacing:-.02em;line-height:1">{{ todayKcal }}</span>
+          <span style="font-size:10px;font-weight:600;letter-spacing:.09em;color:rgba(235,235,245,.5)">KCAL TODAY</span>
+          <span style="font-size:13px;font-weight:600;color:#8ee887;margin-top:10px">{{ todayKm }} KM RUN</span>
+          <span style="font-size:12px;font-weight:500;color:rgba(235,235,245,.55)">{{ streak }}-day streak</span>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="2b">
+      <div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a><b>Phases in daylight</b> — <a class="dv-oid" href="#1k">1k</a> light mode · light</div>
+      <div class="dv-card" style="background:#e9ecef;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#ffffff;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(20,40,25,.12)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.55)">LAST 14 DAYS</span>
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.55)">GOAL <span style="color:#0a7736">{{ goalLabel }}</span> KCAL</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px 14px;width:280px;margin:12px auto 0;justify-content:center">
+          <sc-for list="{{ phaseDiscsL }}" as="p" hint-placeholder-count="8">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:28px;height:28px;border-radius:50%;background:{{ p.bg }};box-shadow:{{ p.bs }}"></div>
+              <span style="font-size:8px;font-weight:600;letter-spacing:.04em;color:rgba(60,60,67,.45)">{{ p.letter }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="2c">
+      <div class="dv-olabel"><a class="dv-oid" href="#2c">2c</a><b>Embers in daylight</b> — <a class="dv-oid" href="#1e">1e</a> light mode · light</div>
+      <div class="dv-card" style="background:#e9ecef;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#ffffff;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(20,40,25,.12)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.55)">LAST 28 DAYS</span>
+          <span style="font-size:12px;font-weight:600;color:#0a7736">{{ streak }}-DAY STREAK</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px 6px;width:302px;margin:26px auto 0">
+          <sc-for list="{{ emberDotsL }}" as="e" hint-placeholder-count="8">
+            <div style="width:16px;height:16px;display:flex;align-items:center;justify-content:center">
+              <div style="width:{{ e.s }}px;height:{{ e.s }}px;border-radius:50%;background:{{ e.bg }};box-shadow:{{ e.bs }}"></div>
+            </div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="2d">
+      <div class="dv-olabel"><a class="dv-oid" href="#2d">2d</a><b>Matrix</b> — LED panel: dot-digits + 30-day meter · dark</div>
+      <div class="dv-card" style="background:#131418;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#0c0d0f;padding:16px 24px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.45)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;font-family:ui-monospace,'SF Mono',Menlo,monospace">
+          <span style="font-size:10px;font-weight:500;letter-spacing:.14em;color:rgba(142,232,135,.55)">BURN MONITOR</span>
+          <span style="font-size:10px;font-weight:500;letter-spacing:.14em;color:rgba(235,235,245,.35)">JUL 14</span>
+        </div>
+        <div style="position:relative;width:296px;height:90px;margin:11px auto 0">
+          <sc-for list="{{ dotEls }}" as="d" hint-placeholder-count="8">
+            <div style="position:absolute;left:{{ d.x }}px;top:{{ d.y }}px;width:4.5px;height:4.5px;border-radius:50%;background:{{ d.bg }}"></div>
+          </sc-for>
+          <span style="position:absolute;left:118px;top:4px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:9px;letter-spacing:.14em;color:rgba(142,232,135,.5)">KCAL</span>
+          <span style="position:absolute;left:118px;top:17px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:9px;letter-spacing:.14em;color:rgba(142,232,135,.5)">TODAY</span>
+          <span style="position:absolute;right:0;top:4px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:9px;letter-spacing:.14em;color:rgba(235,235,245,.3)">STRK {{ streak }}</span>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="2e">
+      <div class="dv-olabel"><a class="dv-oid" href="#2e">2e</a><b>Equalizer</b> — days as segmented LED columns · dark</div>
+      <div class="dv-card" style="background:#131418;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#0c0d0f;padding:16px 24px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.45)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;font-family:ui-monospace,'SF Mono',Menlo,monospace">
+          <span style="font-size:10px;font-weight:500;letter-spacing:.14em;color:rgba(142,232,135,.55)">EQ · LAST 14 DAYS</span>
+          <span style="font-size:10px;font-weight:500;letter-spacing:.14em;color:rgba(235,235,245,.35)">{{ weekKcal }} KCAL WK</span>
+        </div>
+        <div style="position:relative;width:287px;height:69px;margin:14px auto 0">
+          <sc-for list="{{ segEls }}" as="s" hint-placeholder-count="8">
+            <div style="position:absolute;left:{{ s.x }}px;top:{{ s.y }}px;width:14px;height:5px;border-radius:1.5px;background:{{ s.bg }}"></div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="2f">
+      <div class="dv-olabel"><a class="dv-oid" href="#2f">2f</a><b>Day rings</b> — goal sweep per weekday · light</div>
+      <div class="dv-card" style="background:#e9ecef;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#ffffff;padding:16px 20px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(20,40,25,.12)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.55)">THIS WEEK</span>
+          <span style="font-size:12px;font-weight:600;color:#0a7736">{{ weekKcal }} KCAL</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:16px">
+          <sc-for list="{{ weekRings }}" as="r" hint-placeholder-count="7">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+              <div style="position:relative;width:34px;height:34px;border-radius:50%;background:{{ r.bg }};box-shadow:{{ r.bs }}" style-before="content:'';position:absolute;inset:5px;border-radius:50%;background:#ffffff"></div>
+              <span style="font-size:9px;font-weight:600;letter-spacing:.04em;color:rgba(60,60,67,.45)">{{ r.letter }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="text-align:center;margin-top:12px;font-size:10px;font-weight:600;letter-spacing:.08em;color:rgba(60,60,67,.35)">GOAL {{ goalLabel }} KCAL / DAY</div>
+      </div></div>
+    </div>
+
+  </div>
+  <p class="dv-next">Try next: "build the widget suite for <a class="dv-oid" href="#2a">2a</a> + <a class="dv-oid" href="#2d">2d</a> — small, medium, large, lock screen" · "matrix version of the year grid <a class="dv-oid" href="#1a">1a</a>" · "mix <a class="dv-oid" href="#2f">2f</a> rings with <a class="dv-oid" href="#1k">1k</a> phases"</p>
+</section>
+
+<section class="dv-turn" id="t1">
+  <div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Rethinking the contribution chart — 11 takes on "how hard did I go each day"</span></div>
+  <p class="dv-tsub">Same fake athlete everywhere: ~5 workouts/week, a couple of off-weeks, occasional 900+ kcal days. Green ramp from the 3x logo. Mixed dark/light on purpose — any concept can flip. Tweaks: reroll the sample data seed, change the daily kcal goal.</p>
+  <div class="dv-opts">
+
+    <div class="dv-opt" id="1a">
+      <div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a><b>Baseline</b> — the classic grid, 24 weeks · dark · medium</div>
+      <div class="dv-card" style="background:#131418;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#1c1d22;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(235,235,245,.5)">LAST 24 WEEKS</span>
+          <span style="font-size:12px;font-weight:600;color:rgba(235,235,245,.5)"><span style="color:#8ee887;font-size:13px">{{ weekKcal }}</span> KCAL THIS WEEK</span>
+        </div>
+        <div style="position:relative;width:285px;height:81px;margin:12px auto 0">
+          <sc-for list="{{ gridCells }}" as="c" hint-placeholder-count="8">
+            <div style="position:absolute;left:{{ c.x }}px;top:{{ c.y }}px;width:9px;height:9px;border-radius:2.5px;background:{{ c.bg }}"></div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1b">
+      <div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a><b>Year spiral</b> — 365 days coiled, one glance · light · small</div>
+      <div class="dv-card" style="background:#e9ecef;padding:22px"><div style="width:158px;height:158px;border-radius:24px;background:#ffffff;box-sizing:border-box;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(20,40,25,.12)">
+        <div style="position:absolute;left:14px;top:12px;font-size:10px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.55)">2026 · <span style="color:#0a7736">{{ yearKcalK }}</span></div>
+        <sc-for list="{{ spiralDots }}" as="d" hint-placeholder-count="8">
+          <div style="position:absolute;left:{{ d.x }}px;top:{{ d.y }}px;width:{{ d.s }}px;height:{{ d.s }}px;border-radius:50%;background:{{ d.bg }}"></div>
+        </sc-for>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1c">
+      <div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a><b>Burst</b> — 30 days radiating around today's number · dark · small</div>
+      <div class="dv-card" style="background:#131418;padding:22px"><div style="width:158px;height:158px;border-radius:24px;background:#1c1d22;box-sizing:border-box;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)">
+        <sc-for list="{{ burstSpokes }}" as="s" hint-placeholder-count="6">
+          <div style="position:absolute;left:calc(50% - 1.75px);bottom:50%;width:3.5px;height:{{ s.h }}px;border-radius:2px;background:{{ s.grad }};transform:{{ s.rot }};transform-origin:bottom center"></div>
+        </sc-for>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px">
+          <span style="font-size:26px;font-weight:700;color:#ffffff;letter-spacing:-.02em">{{ todayKcal }}</span>
+          <span style="font-size:8.5px;font-weight:600;letter-spacing:.1em;color:rgba(235,235,245,.5)">KCAL TODAY</span>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1d">
+      <div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a><b>Pulse</b> — the month as a waveform · dark · medium</div>
+      <div class="dv-card" style="background:#131418;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#1c1d22;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35);display:flex;align-items:center;gap:14px">
+        <div style="display:flex;flex-direction:column;gap:2px;min-width:88px">
+          <span style="font-size:30px;font-weight:700;color:#ffffff;letter-spacing:-.02em;line-height:1">{{ todayKcal }}</span>
+          <span style="font-size:9.5px;font-weight:600;letter-spacing:.09em;color:rgba(235,235,245,.5)">KCAL TODAY</span>
+          <span style="font-size:12px;font-weight:600;color:#8ee887;margin-top:6px">{{ todayKm }} KM RUN</span>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;gap:3px;height:100%">
+          <sc-for list="{{ waveBars }}" as="b" hint-placeholder-count="8">
+            <div style="width:4px;height:{{ b.h }}px;border-radius:2px;background:{{ b.bg }}"></div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1e">
+      <div class="dv-olabel"><a class="dv-oid" href="#1e">1e</a><b>Embers</b> — hotter days glow harder · dark · medium</div>
+      <div class="dv-card" style="background:#131418;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#17181c;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(235,235,245,.5)">LAST 28 DAYS</span>
+          <span style="font-size:12px;font-weight:600;color:#8ee887">{{ streak }}-DAY STREAK</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px 6px;width:302px;margin:26px auto 0">
+          <sc-for list="{{ emberDots }}" as="e" hint-placeholder-count="8">
+            <div style="width:16px;height:16px;display:flex;align-items:center;justify-content:center">
+              <div style="width:{{ e.s }}px;height:{{ e.s }}px;border-radius:50%;background:{{ e.bg }};box-shadow:{{ e.bs }}"></div>
+            </div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1f">
+      <div class="dv-olabel"><a class="dv-oid" href="#1f">1f</a><b>Garden</b> — every workout grows a blade · light · medium</div>
+      <div class="dv-card" style="background:#e9ecef;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#ffffff;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(20,40,25,.12)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.55)">LAST 30 DAYS</span>
+          <span style="font-size:12px;font-weight:600;color:#0a7736">{{ monthKcal }} KCAL</span>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:4px;height:92px;margin-top:4px;justify-content:center">
+          <sc-for list="{{ gardenBlades }}" as="g" hint-placeholder-count="8">
+            <div style="width:5px;height:{{ g.h }}px;border-radius:3px 3px 0 0;background:{{ g.bg }};transform:{{ g.rot }};transform-origin:bottom center"></div>
+          </sc-for>
+        </div>
+        <div style="height:2px;border-radius:1px;background:#e2e6e2;margin:0 6px"></div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1g">
+      <div class="dv-olabel"><a class="dv-oid" href="#1g">1g</a><b>Ink</b> — the number is the chart: heavier type = bigger burn · light · medium</div>
+      <div class="dv-card" style="background:#e9ecef;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#ffffff;padding:16px 18px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(20,40,25,.12)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.55)">LAST 30 DAYS</span>
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.35)">HEAVIER = HARDER</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;column-gap:11px;row-gap:0;align-items:baseline;margin-top:10px;color:#0a7736">
+          <sc-for list="{{ typeDays }}" as="d" hint-placeholder-count="8">
+            <span style="font-size:{{ d.fs }}px;font-weight:{{ d.fw }};opacity:{{ d.op }};line-height:1.6;font-variant-numeric:tabular-nums">{{ d.n }}</span>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1h">
+      <div class="dv-olabel"><a class="dv-oid" href="#1h">1h</a><b>Ridgeline</b> — four weeks as terrain, front row = this week · light · medium</div>
+      <div class="dv-card" style="background:#e9ecef;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#ffffff;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(20,40,25,.12)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.55)">WEEKLY RHYTHM</span>
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.35)">MON — SUN</span>
+        </div>
+        <svg width="312" height="106" viewBox="0 0 312 106" style="display:block;margin-top:2px">
+          <path d="{{ ridge0.df }}" fill="{{ ridge0.fill }}"></path>
+          <path d="{{ ridge0.ds }}" fill="none" stroke="{{ ridge0.stroke }}" stroke-width="1.5"></path>
+          <path d="{{ ridge1.df }}" fill="{{ ridge1.fill }}"></path>
+          <path d="{{ ridge1.ds }}" fill="none" stroke="{{ ridge1.stroke }}" stroke-width="1.5"></path>
+          <path d="{{ ridge2.df }}" fill="{{ ridge2.fill }}"></path>
+          <path d="{{ ridge2.ds }}" fill="none" stroke="{{ ridge2.stroke }}" stroke-width="1.5"></path>
+          <path d="{{ ridge3.df }}" fill="{{ ridge3.fill }}"></path>
+          <path d="{{ ridge3.ds }}" fill="none" stroke="{{ ridge3.stroke }}" stroke-width="2"></path>
+        </svg>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1i">
+      <div class="dv-olabel"><a class="dv-oid" href="#1i">1i</a><b>Pebbles</b> — effort as mass, rest days are hollow · light · medium</div>
+      <div class="dv-card" style="background:#e9ecef;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#ffffff;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(20,40,25,.12)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(60,60,67,.55)">LAST 3 WEEKS</span>
+          <span style="font-size:12px;font-weight:600;color:#0a7736">{{ threeWeekKcal }} KCAL</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin-top:14px;min-height:80px;align-content:center">
+          <sc-for list="{{ pebbles }}" as="p" hint-placeholder-count="8">
+            <div style="width:{{ p.s }}px;height:{{ p.s }}px;border-radius:50%;background:{{ p.bg }};box-shadow:{{ p.bs }}"></div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1j">
+      <div class="dv-olabel"><a class="dv-oid" href="#1j">1j</a><b>Chain</b> — streaks you can see break · dark · medium</div>
+      <div class="dv-card" style="background:#131418;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#1c1d22;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(235,235,245,.5)">STREAK CHAIN · 4 WEEKS</span>
+          <span style="font-size:12px;font-weight:600;color:#8ee887">{{ streak }} DAYS NOW</span>
+        </div>
+        <div style="position:relative;width:242px;height:89px;margin:14px auto 0">
+          <sc-for list="{{ chainEls }}" as="c" hint-placeholder-count="8">
+            <div style="position:absolute;left:{{ c.x }}px;top:{{ c.y }}px;width:{{ c.w }}px;height:{{ c.h }}px;border-radius:{{ c.r }}px;background:{{ c.bg }};box-shadow:{{ c.bs }}"></div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1k">
+      <div class="dv-olabel"><a class="dv-oid" href="#1k">1k</a><b>Phases</b> — daily goal as a filling moon · dark · medium</div>
+      <div class="dv-card" style="background:#131418;padding:22px"><div style="width:344px;height:158px;border-radius:24px;background:#1c1d22;padding:16px;box-sizing:border-box;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(235,235,245,.5)">LAST 14 DAYS</span>
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(235,235,245,.5)">GOAL <span style="color:#8ee887">{{ goalLabel }}</span> KCAL</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px 14px;width:280px;margin:12px auto 0;justify-content:center">
+          <sc-for list="{{ phaseDiscs }}" as="p" hint-placeholder-count="8">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="width:28px;height:28px;border-radius:50%;background:{{ p.bg }};box-shadow:{{ p.bs }}"></div>
+              <span style="font-size:8px;font-weight:600;letter-spacing:.04em;color:rgba(235,235,245,.4)">{{ p.letter }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+  <p class="dv-next">Try next: "riff on <a class="dv-oid" href="#1e">1e</a> and <a class="dv-oid" href="#1k">1k</a> in both modes" · "turn <a class="dv-oid" href="#1c">1c</a> into a full widget suite — small, medium, large, lock screen" · "more organic ideas like <a class="dv-oid" href="#1f">1f</a>"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;seed&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:7,&quot;min&quot;:1,&quot;max&quot;:99,&quot;section&quot;:&quot;Sample data&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;goal&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:500,&quot;min&quot;:300,&quot;max&quot;:800,&quot;step&quot;:25,&quot;unit&quot;:&quot; kcal&quot;,&quot;section&quot;:&quot;Sample data&quot;,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const seed = Math.round(this.props.seed ?? 7);
+    const goal = Math.round(this.props.goal ?? 500);
+    const key = seed + '_' + goal;
+    if (this._key !== key) { this._vals = this.compute(seed, goal); this._key = key; }
+    return this._vals;
+  }
+
+  compute(seed, goal) {
+    // ---------- seeded PRNG ----------
+    const mulberry = (a) => () => {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    const rnd = mulberry(seed * 9973 + 11);
+
+    // ---------- 365 days of fake training ----------
+    const END = new Date(2026, 6, 14); // Tue Jul 14 2026
+    const N = 365;
+    const gaps = [];
+    for (let g = 0; g < 3; g++) { const s = Math.floor(rnd() * 320); gaps.push([s, s + 4 + Math.floor(rnd() * 5)]); }
+    const baseP = [0.2, 0.85, 0.7, 0.38, 0.8, 0.48, 0.88]; // Sun..Sat
+    const days = [];
+    let prev = false;
+    for (let i = 0; i < N; i++) {
+      const date = new Date(END); date.setDate(END.getDate() - (N - 1 - i));
+      const w = date.getDay();
+      let p = baseP[w];
+      if (gaps.some(([a, b]) => i >= a && i <= b)) p *= 0.06;
+      if (prev) p = Math.min(0.95, p + 0.05);
+      const active = rnd() < p;
+      let kcal = 0, km = 0;
+      if (active) {
+        kcal = Math.round(170 + Math.pow(rnd(), 1.5) * 620);
+        if (rnd() < 0.07) kcal = Math.round(kcal * 1.3 + 130);
+        if (rnd() < 0.5) km = Math.round(kcal / 6.2) / 10;
+      }
+      days.push({ date, w, kcal, km, active });
+      prev = active;
+    }
+    const today = days[N - 1];
+    if (!today.active) { today.active = true; today.kcal = 487; today.km = 7.8; }
+    if (!today.km) today.km = Math.round(today.kcal / 6.2) / 10;
+    days.forEach(d => { d.t = Math.min(1, d.kcal / 880); });
+
+    // ---------- color ramps (from 3x logo greens) ----------
+    const hx = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+    const mix = (a, b, t) => { const A = hx(a), B = hx(b); return 'rgb(' + A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(',') + ')'; };
+    const darkC = t => mix('#1d4527', '#8ee887', Math.pow(t, 0.8));
+    const lightC = t => mix('#c4e7bb', '#0a7736', Math.pow(t, 0.85));
+    const glowC = t => { const c = mix('#1d4527', '#8ee887', Math.pow(t, 0.8)); return c.replace('rgb', 'rgba').replace(')', ',0.55)'); };
+    const DE = '#282b31', LE = '#e7e9ec';
+
+    const last = n => days.slice(N - n);
+    const sum = arr => arr.reduce((s, d) => s + d.kcal, 0);
+    const fmt = n => n.toLocaleString('en-US');
+
+    // ---------- header stats ----------
+    let streak = 0; for (let i = N - 1; i >= 0 && days[i].active; i--) streak++;
+    const weekKcal = fmt(sum(last(7)));
+    const monthKcal = fmt(sum(last(30)));
+    const threeWeekKcal = fmt(sum(last(21)));
+    const yearKcalK = Math.round(sum(days) / 1000) + 'K KCAL';
+    const todayKcal = fmt(today.kcal);
+    const todayKm = today.km;
+
+    // ---------- 1a grid: 24 week columns, Sun-start ----------
+    const gridCells = [];
+    const endDow = END.getDay();
+    const weeks = 24;
+    const startIdx = (N - 1) - endDow - (weeks - 1) * 7;
+    for (let c = 0; c < weeks; c++) for (let r = 0; r < 7; r++) {
+      const idx = startIdx + c * 7 + r;
+      if (idx < 0 || idx > N - 1) continue;
+      const d = days[idx];
+      gridCells.push({ x: c * 12, y: r * 12, bg: d.active ? darkC(d.t) : DE });
+    }
+
+    // ---------- 1b spiral: 365 dots, ~5 turns ----------
+    const spiralDots = [];
+    for (let i = 0; i < N; i++) {
+      const f = i / (N - 1);
+      const th = -Math.PI / 2 + f * 5.2 * 2 * Math.PI;
+      const r = 12 + f * 50;
+      const d = days[i];
+      const s = d.active ? 3.2 + d.t * 2.4 : 2.2;
+      spiralDots.push({
+        x: (79 + r * Math.cos(th) - s / 2).toFixed(1),
+        y: (90 + r * Math.sin(th) - s / 2).toFixed(1),
+        s: s.toFixed(1),
+        bg: d.active ? lightC(d.t) : LE
+      });
+    }
+
+    // ---------- 1c burst: 30 spokes ----------
+    const burstSpokes = last(30).map((d, i) => {
+      const len = d.active ? 10 + d.t * 30 : 4;
+      return {
+        h: Math.round(36 + len),
+        rot: 'rotate(' + (i * 12) + 'deg)',
+        grad: 'linear-gradient(to top, rgba(0,0,0,0) 36px, ' + (d.active ? darkC(d.t) : '#33363c') + ' 36px)'
+      };
+    });
+
+    // ---------- 1d waveform ----------
+    const waveBars = last(30).map(d => ({
+      h: d.active ? Math.round(10 + d.t * 86) : 4,
+      bg: d.active ? darkC(d.t) : '#2c2f35'
+    }));
+
+    // ---------- 1e embers ----------
+    const emberDots = last(28).map(d => ({
+      s: d.active ? (7 + d.t * 6).toFixed(1) : 4,
+      bg: d.active ? darkC(d.t) : '#2c2f35',
+      bs: d.active ? '0 0 ' + (4 + d.t * 16).toFixed(0) + 'px ' + (d.t * 3).toFixed(1) + 'px ' + glowC(d.t) : 'none'
+    }));
+
+    // ---------- 1f garden ----------
+    const gardenBlades = last(30).map(d => ({
+      h: d.active ? Math.round(8 + d.t * 84) : 5,
+      rot: 'rotate(' + (rnd() * 8 - 4).toFixed(1) + 'deg)',
+      bg: d.active ? lightC(d.t) : '#dde2dd'
+    }));
+
+    // ---------- 1g type ----------
+    const typeDays = last(30).map(d => ({
+      n: d.date.getDate(),
+      fs: d.active ? 16 + Math.round(d.t * 12) : 15,
+      fw: d.active ? 300 + Math.round(d.t * 6) * 100 : 200,
+      op: d.active ? (0.3 + d.t * 0.7).toFixed(2) : 0.16
+    }));
+
+    // ---------- 1h ridgeline: 4 weeks, Mon-Sun ----------
+    const smooth = pts => {
+      let dd = 'M ' + pts[0][0] + ',' + pts[0][1];
+      for (let i = 1; i < pts.length - 1; i++) {
+        const mx = (pts[i][0] + pts[i + 1][0]) / 2, my = (pts[i][1] + pts[i + 1][1]) / 2;
+        dd += i === pts.length - 2
+          ? ' Q ' + pts[i][0] + ',' + pts[i][1] + ' ' + pts[i + 1][0] + ',' + pts[i + 1][1]
+          : ' Q ' + pts[i][0] + ',' + pts[i][1] + ' ' + mx.toFixed(1) + ',' + my.toFixed(1);
+      }
+      return dd;
+    };
+    const ridges = {};
+    for (let wk = 0; wk < 4; wk++) {
+      const base = 26 + wk * 26;
+      const wdays = days.slice(N - 28 + wk * 7, N - 28 + wk * 7 + 7);
+      const pts = wdays.map((d, j) => [Math.round(j * 52), +(base - d.t * 26).toFixed(1)]);
+      const ds = smooth(pts);
+      ridges['ridge' + wk] = {
+        ds,
+        df: ds + ' L 312,' + base + ' L 0,' + base + ' Z',
+        fill: 'rgba(19,127,60,' + (0.10 + wk * 0.09).toFixed(2) + ')',
+        stroke: lightC(0.35 + wk * 0.18)
+      };
+    }
+
+    // ---------- 1i pebbles ----------
+    const pebbles = last(21).map(d => ({
+      s: d.active ? Math.round(9 + d.t * 28) : 7,
+      bg: d.active ? lightC(d.t) : 'transparent',
+      bs: d.active ? 'none' : 'inset 0 0 0 1.5px #d0d5d0'
+    }));
+
+    // ---------- 1j chain ----------
+    const chainEls = [];
+    const c28 = last(28);
+    for (let r = 0; r < 4; r++) for (let j = 0; j < 7; j++) {
+      const i = r * 7 + j;
+      const d = c28[i];
+      const x = j * 38, y = r * 25;
+      chainEls.push({
+        x, y, w: 14, h: 14, r: 7,
+        bg: d.active ? darkC(d.t) : 'transparent',
+        bs: d.active ? 'none' : 'inset 0 0 0 1.5px #3a3e45'
+      });
+      if (j < 6) {
+        const both = d.active && c28[i + 1].active;
+        chainEls.push({
+          x: x + 17, y: y + 5.5, w: 18, h: 3, r: 1.5,
+          bg: both ? 'rgba(142,232,135,0.45)' : 'rgba(255,255,255,0.06)',
+          bs: 'none'
+        });
+      }
+    }
+
+    // ---------- 1k goal phases ----------
+    const phaseDiscs = last(14).map(d => {
+      const pct = Math.min(112, Math.round(d.kcal / goal * 100));
+      const fill = darkC(Math.min(1, d.kcal / goal));
+      return {
+        letter: 'SMTWTFS'[d.w],
+        bg: pct <= 0 ? '#2b2e34' : 'linear-gradient(to top, ' + fill + ' ' + pct + '%, #2b2e34 ' + pct + '%)',
+        bs: pct >= 100 ? '0 0 0 1.5px rgba(142,232,135,0.75), 0 0 10px rgba(142,232,135,0.3)' : 'none'
+      };
+    });
+
+    // ---------- turn 2: system-native riffs ----------
+    const burst2 = last(30).map((d, i) => {
+      const len = d.active ? 8 + d.t * 26 : 3;
+      return { h: Math.round(28 + len), rot: 'rotate(' + (i * 12) + 'deg)', grad: 'linear-gradient(to top, rgba(0,0,0,0) 28px, ' + (d.active ? darkC(d.t) : '#33363c') + ' 28px)' };
+    });
+    const phaseDiscsL = last(14).map(d => {
+      const pct = Math.min(112, Math.round(d.kcal / goal * 100));
+      const fill = lightC(Math.min(1, d.kcal / goal));
+      return { letter: 'SMTWTFS'[d.w], bg: pct <= 0 ? '#e9ebee' : 'linear-gradient(to top, ' + fill + ' ' + pct + '%, #e9ebee ' + pct + '%)', bs: pct >= 100 ? '0 0 0 1.5px rgba(10,119,54,0.55), 0 0 8px rgba(19,127,60,0.25)' : 'none' };
+    });
+    const emberDotsL = last(28).map(d => ({
+      s: d.active ? (7 + d.t * 6).toFixed(1) : 4,
+      bg: d.active ? lightC(d.t) : '#e3e6e3',
+      bs: d.active ? '0 0 ' + (3 + d.t * 14).toFixed(0) + 'px ' + (d.t * 2.5).toFixed(1) + 'px rgba(19,127,60,' + (0.15 + d.t * 0.3).toFixed(2) + ')' : 'none'
+    }));
+    // ---------- turn 2: dot-matrix language ----------
+    const FONT = { '0': ['01110', '10001', '10011', '10101', '11001', '10001', '01110'], '1': ['00100', '01100', '00100', '00100', '00100', '00100', '01110'], '2': ['01110', '10001', '00001', '00010', '00100', '01000', '11111'], '3': ['11111', '00010', '00100', '00010', '00001', '10001', '01110'], '4': ['00010', '00110', '01010', '10010', '11111', '00010', '00010'], '5': ['11111', '10000', '11110', '00001', '00001', '10001', '01110'], '6': ['00110', '01000', '10000', '11110', '10001', '10001', '01110'], '7': ['11111', '00001', '00010', '00100', '01000', '01000', '01000'], '8': ['01110', '10001', '10001', '01110', '10001', '10001', '01110'], '9': ['01110', '10001', '10001', '01111', '00001', '00010', '01100'] };
+    const dotEls = [];
+    String(today.kcal).split('').forEach((ch, di) => {
+      const glyph = FONT[ch];
+      for (let r = 0; r < 7; r++) for (let c = 0; c < 5; c++) {
+        dotEls.push({ x: di * 36 + c * 6, y: r * 6, bg: glyph[r][c] === '1' ? '#8ee887' : '#1d2125' });
+      }
+    });
+    last(30).forEach((d, i) => {
+      const lit = d.active ? Math.max(1, Math.round(d.t * 6)) : 0;
+      for (let r = 0; r < 6; r++) {
+        dotEls.push({ x: i * 10, y: 54 + (5 - r) * 6, bg: r < lit ? darkC(0.25 + d.t * 0.75) : '#1d2125' });
+      }
+    });
+    const segEls = [];
+    last(14).forEach((d, i) => {
+      const lit = d.active ? Math.max(1, Math.round(d.t * 9)) : 0;
+      for (let r = 0; r < 9; r++) {
+        segEls.push({ x: i * 21, y: (8 - r) * 8, bg: r < lit ? mix('#1d4527', '#8ee887', r / 8) : '#22262b' });
+      }
+    });
+    const weekRings = last(7).map(d => {
+      const pct = Math.min(100, Math.round(d.kcal / goal * 100));
+      return { letter: 'SMTWTFS'[d.w], bg: pct <= 0 ? 'conic-gradient(#e8eaed 0 100%)' : 'conic-gradient(#0a7736 0 ' + pct + '%, #e8eaed ' + pct + '% 100%)', bs: pct >= 100 ? '0 0 0 2px rgba(10,119,54,0.45)' : 'none' };
+    });
+
+    // ---------- turn 3: nothing language (monochrome + red interrupt) ----------
+    const monoRow = last(30).map((d, i) => ({
+      bg: i === 29 ? '#D71921' : (d.active ? 'rgba(255,255,255,' + (0.14 + d.t * 0.86).toFixed(2) + ')' : 'rgba(255,255,255,0.07)')
+    }));
+    const DOWS = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+    const segRows = last(7).map((d, i) => {
+      const lit = d.active ? Math.max(1, Math.round(d.t * 10)) : 0;
+      const segs = [];
+      for (let s = 0; s < 10; s++) segs.push(s < lit ? '#1A1A1A' : 'rgba(0,0,0,0.09)');
+      return {
+        label: DOWS[d.w] + ' ' + String(d.date.getDate()).padStart(2, '0'),
+        val: d.active ? String(d.kcal) : '---',
+        segs,
+        mark: i === 6 ? '#D71921' : 'transparent'
+      };
+    });
+    const gridMono = [];
+    const gridGlass = [];
+    for (let c = 0; c < weeks; c++) for (let r = 0; r < 7; r++) {
+      const idx = startIdx + c * 7 + r;
+      if (idx < 0 || idx > N - 1) continue;
+      const d = days[idx];
+      gridMono.push({ x: c * 12, y: r * 12, bg: idx === N - 1 ? '#D71921' : (d.active ? 'rgba(255,255,255,' + (0.10 + d.t * 0.9).toFixed(2) + ')' : 'rgba(255,255,255,0.05)') });
+      gridGlass.push({ x: c * 12, y: r * 12, bg: d.active ? lightC(d.t) : 'rgba(50,70,50,0.14)' });
+    }
+    const weekKm = (Math.round(last(7).reduce((s, d) => s + d.km, 0) * 10) / 10).toFixed(1);
+    const streakPad = String(streak).padStart(2, '0');
+
+    // ---------- turn 3: sans-serif editorial language ----------
+    const DAYFULL = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const lastActive = days.filter(d => d.active).slice(-4);
+    const typeStack = lastActive.map((d, i) => ({
+      label: DAYFULL[d.w],
+      val: d.kcal,
+      fw: 300 + Math.round(d.t * 6) * 100,
+      color: i === lastActive.length - 1 ? '#0a7736' : '#181b18',
+      op: (0.45 + d.t * 0.55).toFixed(2)
+    }));
+    const barsPoster = last(14).map((d, i) => ({
+      h: d.active ? Math.round(6 + d.t * 44) : 3,
+      bg: i === 13 ? '#8ee887' : 'rgba(255,255,255,' + (d.active ? (0.35 + d.t * 0.6).toFixed(2) : '0.12') + ')'
+    }));
+    const tableRows = last(7).map(d => ({
+      label: DOWS[d.w],
+      kcal: d.active ? String(d.kcal) : '—',
+      km: d.km ? d.km.toFixed(1) : '—',
+      barW: d.active ? Math.round(4 + d.t * 66) : 0,
+      dot: d.active ? lightC(d.t) : '#e3e6e0'
+    }));
+
+    return {
+      typeStack, barsPoster, tableRows,
+      monoRow, segRows, gridMono, gridGlass, weekKm, streakPad,
+      burst2, phaseDiscsL, emberDotsL, dotEls, segEls, weekRings,
+      todayKcal, todayKm, weekKcal, monthKcal, threeWeekKcal, yearKcalK, streak,
+      goalLabel: goal,
+      gridCells, spiralDots, burstSpokes, waveBars, emberDots, gardenBlades,
+      typeDays, pebbles, chainEls, phaseDiscs,
+      ridge0: ridges.ridge0, ridge1: ridges.ridge1, ridge2: ridges.ridge2, ridge3: ridges.ridge3
+    };
+  }
+}
+</script>
+</body>
+</html>

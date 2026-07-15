@@ -1,0 +1,61 @@
+name: Build Momentum IPA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build (unsigned, device SDK)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Momentum.xcodeproj \
+            -scheme Momentum \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build > xcodebuild.log 2>&1 || {
+              echo "❌ Build failed — errors:"
+              grep -E "error:|warning: .*deprecated" xcodebuild.log | head -60
+              exit 1
+            }
+          echo "✅ Build OK"
+          grep -c "warning:" xcodebuild.log || true
+
+      - name: Package unsigned IPA
+        run: |
+          mkdir -p Payload
+          cp -R "build/Build/Products/Release-iphoneos/Momentum.app" Payload/
+          zip -qry "Momentum-unsigned.ipa" Payload
+          ls -la
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Momentum-unsigned-ipa
+          path: Momentum-unsigned.ipa
+          retention-days: 14
+
+      - name: Upload build log (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcodebuild-log
+          path: xcodebuild.log

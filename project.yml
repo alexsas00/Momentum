@@ -1,0 +1,86 @@
+# XcodeGen spec — generates Momentum.xcodeproj on the CI runner.
+# Two targets, shared sources per CLAUDE.md (Models/Theme/Viz in BOTH targets).
+name: Momentum
+options:
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    TARGETED_DEVICE_FAMILY: "1"
+    CURRENT_PROJECT_VERSION: "1"
+    MARKETING_VERSION: "0.1.0"
+    # Signing happens later (Sideloadly/SideStore); CI builds unsigned.
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  Momentum:
+    type: application
+    platform: iOS
+    sources:
+      - Sources/App
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.alessandro.momentum
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    entitlements:
+      path: Momentum.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.momentum.shared
+        com.apple.developer.healthkit: true
+    info:
+      path: Momentum-Info.plist
+      properties:
+        CFBundleDisplayName: Momentum
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSHealthShareUsageDescription: >-
+          Momentum reads your workouts, energy burned, distance and steps
+          to draw your widgets.
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        ITSAppUsesNonExemptEncryption: false
+    dependencies:
+      - target: MomentumWidgets
+        embed: true
+
+  MomentumWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Sources/Widgets
+      # Shared with the app target (target membership, not duplication):
+      - Sources/App/Models.swift
+      - Sources/App/Theme.swift
+      - Sources/App/Viz
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.alessandro.momentum.widgets
+        SKIP_INSTALL: YES
+    entitlements:
+      path: MomentumWidgets.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.momentum.shared
+    info:
+      path: MomentumWidgets-Info.plist
+      properties:
+        CFBundleDisplayName: Momentum
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+
+schemes:
+  Momentum:
+    build:
+      targets:
+        Momentum: all
+    run:
+      config: Debug
+    archive:
+      config: Release
