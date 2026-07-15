@@ -237,3 +237,18 @@ struct TodayView: View {
         }
     }
 }
+
+extension View {
+    func adaptiveGlassButton(prominent: Bool = false) -> some View {
+        self
+            .buttonStyle(.plain)
+            .background(
+                prominent ? Chrome.accent.opacity(0.3) : Chrome.card,
+                in: RoundedRectangle(cornerRadius: 16)
+            )
+            .overlay {
+                RoundedRectangle(cornerRadius: 16)
+                    .strokeBorder(Chrome.hairline, lineWidth: 1)
+            }
+    }
+}
