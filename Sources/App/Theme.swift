@@ -68,7 +68,6 @@ struct Palette: Identifiable, Codable, Hashable {
     static let curated: [Palette] = [greenDark, greenLight, monoRed, ember, ocean, paper]
 
     /// Custom palette derived from a single user-picked accent (Studio ColorPicker).
-    /// Low end = same hue at reduced brightness/saturation so the ramp stays coherent.
     static func custom(from accent: Color, dark: Bool = true) -> Palette {
         var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
         UIColor(accent).getHue(&h, saturation: &s, brightness: &b, alpha: &a)
@@ -97,10 +96,128 @@ struct Palette: Identifiable, Codable, Hashable {
 
 enum Chrome {
     static let background = Color(hex: "0C0D0F")
-    static let card = Color(hex: "1C1D22")
+    static let card = Color(hex: "17181C")          // one notch quieter than before
+    static let cardElevated = Color(hex: "1C1D22")  // legacy card / widget mirror surfaces
     static let hairline = Color.white.opacity(0.08)
     static let secondary = Color.white.opacity(0.62)
     static let tertiary = Color.white.opacity(0.40)
+    static let accent = Palette.greenDark.accent
+}
+
+// MARK: - Motion tokens
+
+/// One motion vocabulary for the whole app. Springs only; Reduce Motion is handled
+/// at the call site via `Motion.respect(_:reduce:)`.
+enum Motion {
+    /// Default state changes — crisp, no overshoot.
+    static let snap = Animation.spring(response: 0.32, dampingFraction: 0.92)
+    /// Larger layout settles (cards swapping, sections appearing).
+    static let settle = Animation.spring(response: 0.45, dampingFraction: 1.0)
+    /// Direct user gestures — a touch of bounce as tactile confirmation.
+    static let pop = Animation.spring(response: 0.35, dampingFraction: 0.72)
+
+    /// Returns the spring, or a plain fade when Reduce Motion is on.
+    static func respect(_ animation: Animation, reduceMotion: Bool) -> Animation {
+        reduceMotion ? .easeInOut(duration: 0.2) : animation
+    }
+}
+
+// MARK: - Liquid Glass helpers (iOS 26+, graceful fallback)
+
+/// Groups sibling glass shapes so they render in one pass and can blend/morph.
+/// On < iOS 26 it is a transparent pass-through.
+struct GlassGroup<Content: View>: View {
+    var spacing: CGFloat = 16
+    @ViewBuilder var content: Content
+
+    var body: some View {
+        if #available(iOS 26, *) {
+            GlassEffectContainer(spacing: spacing) { content }
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+    /// Liquid Glass capsule surface for chips, pills and floating controls.
+    /// Falls back to `.ultraThinMaterial` on earlier systems.
+    @ViewBuilder
+    func glassCapsule(tint: Color? = nil, interactive: Bool = false) -> some View {
+        if #available(iOS 26, *) {
+            self.glassEffect(Self.resolvedGlass(tint: tint, interactive: interactive), in: .capsule)
+        } else {
+            self.background(tint?.opacity(0.16) ?? .clear)
+                .background(.ultraThinMaterial, in: Capsule())
+                .clipShape(Capsule())
+        }
+    }
+
+    /// Liquid Glass rounded-rect surface for larger floating controls.
+    @ViewBuilder
+    func glassCard(cornerRadius: CGFloat = 20, tint: Color? = nil, interactive: Bool = false) -> some View {
+        if #available(iOS 26, *) {
+            self.glassEffect(Self.resolvedGlass(tint: tint, interactive: interactive),
+                             in: .rect(cornerRadius: cornerRadius))
+        } else {
+            self.background(tint?.opacity(0.16) ?? .clear)
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        }
+    }
+
+    /// Liquid Glass circle — steppers, icon buttons.
+    @ViewBuilder
+    func glassCircle(tint: Color? = nil, interactive: Bool = true) -> some View {
+        if #available(iOS 26, *) {
+            self.glassEffect(Self.resolvedGlass(tint: tint, interactive: interactive), in: .circle)
+        } else {
+            self.background(tint?.opacity(0.16) ?? .clear)
+                .background(.ultraThinMaterial, in: Circle())
+                .clipShape(Circle())
+        }
+    }
+
+    @available(iOS 26, *)
+    private static func resolvedGlass(tint: Color?, interactive: Bool) -> Glass {
+        var g: Glass = .regular
+        if let tint { g = g.tint(tint) }
+        if interactive { g = g.interactive() }
+        return g
+    }
+
+    /// Soft scroll-edge treatment under floating headers (no-op before iOS 26).
+    @ViewBuilder
+    func softTopEdge() -> some View {
+        if #available(iOS 26, *) {
+            self.scrollEdgeEffectStyle(.soft, for: .top)
+        } else {
+            self
+        }
+    }
+}
+
+/// A button style that resolves to Liquid Glass on iOS 26 and a tinted capsule before.
+struct AdaptiveGlassButton: ViewModifier {
+    var prominent: Bool = false
+
+    func body(content: Content) -> some View {
+        if #available(iOS 26, *) {
+            if prominent {
+                content.buttonStyle(.glassProminent)
+            } else {
+                content.buttonStyle(.glass)
+            }
+        } else {
+            content.buttonStyle(.bordered)
+        }
+    }
+}
+
+extension View {
+    func adaptiveGlassButton(prominent: Bool = false) -> some View {
+        modifier(AdaptiveGlassButton(prominent: prominent))
+    }
 }
 
 // MARK: - Type helpers ("apple + a touch of grotesk")
@@ -113,12 +230,25 @@ extension View {
             .monospacedDigit()
             .kerning(-0.5)
     }
+
+    /// The Momentum wordmark voice — big, heavy, expanded sans serif.
+    func wordmark(_ size: CGFloat = 40) -> some View {
+        font(.system(size: size, weight: .heavy, design: .default))
+            .fontWidth(.expanded)
+            .kerning(-1.0)
+    }
+
     /// 11pt uppercase tracked caption (canvas caption row).
     func widgetCaption(_ color: Color) -> some View {
         font(.system(size: 11, weight: .semibold))
             .kerning(0.7)
             .textCase(.uppercase)
             .foregroundStyle(color)
+    }
+
+    /// Section label inside screens — same voice as widgetCaption, app-side name.
+    func sectionLabel() -> some View {
+        widgetCaption(Chrome.tertiary)
     }
 }
 
