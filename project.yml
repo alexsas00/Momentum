@@ -57,6 +57,7 @@ targets:
       - Sources/App/Models.swift
       - Sources/App/Theme.swift
       - Sources/App/Viz
+      - Sources/App/Presets.swift
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.alessandro.momentum.widgets
