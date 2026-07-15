@@ -102,32 +102,41 @@ struct SpiralViz: View {
 struct BurstViz: View {
     var input: VizInput
     var showNumber: Bool = true
+
+    private var todayValue: Double { input.today?.value ?? 0 }
+
     var body: some View {
         ZStack {
-            Canvas { ctx, size in
-                let n = input.series.count
-                let c = CGPoint(x: size.width / 2, y: size.height / 2)
-                let gap = min(size.width, size.height) * 0.29
-                let maxLen = min(size.width, size.height) * 0.21
-                for i in 0..<n {
-                    let d = input.series[i]
-                    let len: CGFloat = d.value > 0 ? maxLen * (0.25 + 0.75 * input.t(d.value)) : maxLen * 0.1
-                    let th = -Double.pi / 2 + Double(i) * (2 * .pi / Double(n))
-                    var path = Path()
-                    path.move(to: CGPoint(x: c.x + gap * cos(th), y: c.y + gap * sin(th)))
-                    path.addLine(to: CGPoint(x: c.x + (gap + len) * cos(th), y: c.y + (gap + len) * sin(th)))
-                    ctx.stroke(path, with: .color(input.dayColor(i)), style: .init(lineWidth: 3.5, lineCap: .round))
-                }
+            spokes
+            if showNumber { numberOverlay }
+        }
+    }
+
+    private var spokes: some View {
+        Canvas { ctx, size in
+            let n = input.series.count
+            let c = CGPoint(x: size.width / 2, y: size.height / 2)
+            let gap = min(size.width, size.height) * 0.29
+            let maxLen = min(size.width, size.height) * 0.21
+            for i in 0..<n {
+                let d = input.series[i]
+                let len: CGFloat = d.value > 0 ? maxLen * (0.25 + 0.75 * input.t(d.value)) : maxLen * 0.1
+                let th = -Double.pi / 2 + Double(i) * (2 * .pi / Double(n))
+                var path = Path()
+                path.move(to: CGPoint(x: c.x + gap * cos(th), y: c.y + gap * sin(th)))
+                path.addLine(to: CGPoint(x: c.x + (gap + len) * cos(th), y: c.y + (gap + len) * sin(th)))
+                ctx.stroke(path, with: .color(input.dayColor(i)), style: .init(lineWidth: 3.5, lineCap: .round))
             }
-            if showNumber {
-                VStack(spacing: 1) {
-                    Text(input.today?.value ?? 0, format: .number.precision(.fractionLength(0)))
-                        .heroNumeral(26)
-                        .foregroundStyle(input.palette.primaryText)
-                    Text(input.unit + " today")
-                        .widgetCaption(input.palette.secondaryText)
-                }
-            }
+        }
+    }
+
+    private var numberOverlay: some View {
+        VStack(spacing: 1) {
+            Text(todayValue, format: .number.precision(.fractionLength(0)))
+                .heroNumeral(26)
+                .foregroundStyle(input.palette.primaryText)
+            Text(input.unit + " today")
+                .widgetCaption(input.palette.secondaryText)
         }
     }
 }
