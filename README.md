@@ -50,8 +50,8 @@ All take `[DayValue] + Palette + goal` and normalize `t = min(1, value/goal-cap)
 ## Design Tokens
 - **Chrome (dark):** bg `#0C0D0F`, card `#1C1D22`, hairline `rgba(255,255,255,0.08)`, text `#FFFFFF` / 62% / 40%.
 - **Palettes** (`Theme.swift`), each = empty + low→high ramp + accent:
-  - 3x Green (dark): empty `#282B31`, ramp `#1D4527 → #8EE887`, accent `#8EE887`
-  - 3x Green (light): empty `#E7E9EC`, ramp `#C4E7BB → #0A7736`, accent `#0A7736`
+  - Green (dark): empty `#282B31`, ramp `#1D4527 → #8EE887`, accent `#8EE887`
+  - Green (light): empty `#E7E9EC`, ramp `#C4E7BB → #0A7736`, accent `#0A7736`
   - Mono + Red (Nothing): empty `rgba(255,255,255,0.07)`, ramp `white 14% → 100%`, interrupt `#D71921` (today only)
   - Ember: empty `#2B2420`, ramp `#4A2A18 → #FFB86B`, accent `#FFB86B`
   - Ocean: empty `#20262E`, ramp `#173A54 → #7FD4FF`, accent `#7FD4FF`
@@ -60,7 +60,7 @@ All take `[DayValue] + Palette + goal` and normalize `t = min(1, value/goal-cap)
 - **Spacing:** 4/8/12/16/24/32. **Radii:** widgets 24 (16 in Mono palette), cards 24, chips 999. **Type scale:** hero 34–64 heavy expanded, title 17/600, body 15/400, caption 11/600 caps.
 
 ## Assets
-None required. Dot-matrix digits are code-drawn; no custom fonts bundled (SF only). The 3x logo greens are encoded in the palettes.
+None required. Dot-matrix digits are code-drawn; no custom fonts bundled (SF only).
 
 ## Files
 - `design/Widget Concepts.dc.html` — visual source of truth (open in a browser)
