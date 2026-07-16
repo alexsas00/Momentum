@@ -1,10 +1,8 @@
 name: Build Momentum IPA
-
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: macos-15
@@ -12,6 +10,31 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: List available Xcode versions on this runner
+        run: ls /Applications | grep -i xcode
+
+      - name: Show default Xcode/SDK before selection
+        run: |
+          xcodebuild -version
+          xcodebuild -showsdks
+
+      - name: Select Xcode 26 if available (else keep default)
+        run: |
+          if [ -d "/Applications/Xcode_26.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_26.app/Contents/Developer
+            echo "Switched to Xcode 26"
+          elif [ -d "/Applications/Xcode-26.app" ]; then
+            sudo xcode-select -s /Applications/Xcode-26.app/Contents/Developer
+            echo "Switched to Xcode-26"
+          else
+            echo "Xcode 26 not found on this runner — building with default Xcode (no Liquid Glass, code falls back to ultraThinMaterial)"
+          fi
+
+      - name: Show active Xcode/SDK after selection
+        run: |
+          xcodebuild -version
+          xcodebuild -showsdks
 
       - name: Install XcodeGen
         run: brew install xcodegen
